@@ -1,32 +1,26 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class FissileCube : MonoBehaviour
 {
     [SerializeField] private int _minCubesCount = 2;
     [SerializeField] private int _maxCubesCount = 6;
     [SerializeField] private float _scaleFactor = 0.5f;
-    [SerializeField] private float _splitChanceFactor = 0.5f;
-
-    [SerializeField] private float _explosionForce = 10f;
-    [SerializeField] private float _explosionRadius = 5f;
-
-    [SerializeField] private MaterialCreator _materialCreator;
+    [SerializeField] private float _splitChanceFactor = 0.5f;    
     [SerializeField] private ChanceCalculator _chanceCalculator;
     [SerializeField] private Transform _container;
-    [SerializeField] private Rigidbody _rigidbody;
+    [SerializeField] private ExplodingCube _explodingCube;
 
     private float _splitChance = 100;
 
     private void OnMouseDown()
     {
-        if (_chanceCalculator.CheckChanceSuccess(_splitChance))
+        if (_chanceCalculator.CalculateSuccessByPercentage(_splitChance))
         {
             SpawnSmallCubes();
         }
         else
         {
-            Explode();
+            _explodingCube.ExplodeWithShockwave();
         }
 
         Destroy(gameObject);
@@ -35,28 +29,6 @@ public class FissileCube : MonoBehaviour
     public void SetSplitChance(float splitChance)
     {
         _splitChance = splitChance;
-    }
-
-    public void AddExplosionForce(float force, Vector3 position, float radius)
-    {
-        _rigidbody.AddExplosionForce(force, position, radius);
-    }
-
-    private void Explode()
-    {
-        Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRadius);
-
-        foreach (Collider hit in hits)
-        {
-            if(hit.TryGetComponent(out FissileCube cube))
-            {
-                float distance = Vector3.Distance(transform.position, hit.transform.position);
-                if (distance == 0) continue;
-
-                float finalExplosionForce = _explosionForce / distance / transform.localScale.x;
-                cube.AddExplosionForce(finalExplosionForce, transform.position, _explosionRadius);
-            }
-        }
     }
 
     private void SpawnSmallCubes()
@@ -75,7 +47,7 @@ public class FissileCube : MonoBehaviour
         newCube.transform.localScale = transform.localScale * _scaleFactor;
 
         MeshRenderer renderer = newCube.GetComponent<MeshRenderer>();
-        renderer.material = _materialCreator.CreateRandomMaterial();
+        renderer.material.color = Random.ColorHSV();
 
         newCube.SetSplitChance(_splitChance * _splitChanceFactor);
 

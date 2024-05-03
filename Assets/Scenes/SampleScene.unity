@@ -339,50 +339,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 292636841}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &366766062
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 366766064}
-  - component: {fileID: 366766063}
-  m_Layer: 0
-  m_Name: MaterialCreator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &366766063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 366766062}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6375c6ebeb4c31244895c87a9a49c789, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &366766064
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 366766062}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1049546245}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &403853916
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,6 +535,7 @@ GameObject:
   - component: {fileID: 635610491}
   - component: {fileID: 635610490}
   - component: {fileID: 635610495}
+  - component: {fileID: 635610496}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -602,12 +559,9 @@ MonoBehaviour:
   _maxCubesCount: 6
   _scaleFactor: 0.5
   _splitChanceFactor: 0.5
-  _explosionForce: 100
-  _explosionRadius: 20
-  _materialCreator: {fileID: 366766063}
   _chanceCalculator: {fileID: 403853918}
   _container: {fileID: 569036879}
-  _rigidbody: {fileID: 635610495}
+  _explodingCube: {fileID: 635610496}
 --- !u!65 &635610491
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -721,6 +675,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &635610496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635610489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d9e98a078a33914b98f3bd0a2f42b32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _explosionForce: 10
+  _explosionRadius: 5
+  _rigidbody: {fileID: 635610495}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -935,7 +904,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 366766064}
   - {fileID: 403853917}
   m_Father: {fileID: 0}
   m_RootOrder: 4
