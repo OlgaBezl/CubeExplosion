@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class FissileCube : MonoBehaviour
 {
@@ -23,6 +24,10 @@ public class FissileCube : MonoBehaviour
         {
             SpawnSmallCubes();
         }
+        else
+        {
+            Explode();
+        }
 
         Destroy(gameObject);
     }
@@ -32,9 +37,26 @@ public class FissileCube : MonoBehaviour
         _splitChance = splitChance;
     }
 
-    public void Explode()
+    public void AddExplosionForce(float force, Vector3 position, float radius)
     {
-        _rigidbody.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
+        _rigidbody.AddExplosionForce(force, position, radius);
+    }
+
+    private void Explode()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRadius);
+
+        foreach (Collider hit in hits)
+        {
+            if(hit.TryGetComponent(out FissileCube cube))
+            {
+                float distance = Vector3.Distance(transform.position, hit.transform.position);
+                if (distance == 0) continue;
+
+                float finalExplosionForce = _explosionForce / distance / transform.localScale.x;
+                cube.AddExplosionForce(finalExplosionForce, transform.position, _explosionRadius);
+            }
+        }
     }
 
     private void SpawnSmallCubes()
@@ -56,7 +78,6 @@ public class FissileCube : MonoBehaviour
         renderer.material = _materialCreator.CreateRandomMaterial();
 
         newCube.SetSplitChance(_splitChance * _splitChanceFactor);
-        newCube.Explode();
 
         return newCube;
     }
